@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set active = 'syllabus' %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Academic Syllabus{% endblock %}
+{% block content %}
+
+<section id="units">
+    <h1>🎓 Academic Syllabus</h1>
+    <p class="note">University syllabus, unit by unit. Every topic has a Hindi video (opens on YouTube in a new tab). Want simple notes? See <a href="{{ url_for('topic_list') }}">Topics</a>.</p>
+    <p>
+        {% for u in syllabus %}
+        <a class="chip" href="#unit-{{ loop.index }}">{{ u.unit }}</a>
+        {% endfor %}
+    </p>
+</section>
+
+{% for u in syllabus %}
+<section id="unit-{{ loop.index }}" class="syllabus">
+    <h2>{{ u.unit }} — {{ u.title }}</h2>
+    <div class="grid">
+        {% for g in u.groups %}
+        {% set v = videos[g.video] %}
+        <div class="box">
+            <h3>{{ g.name }}</h3>
+            {% if g.topics %}
+            <ul>
+                {% for t in g.topics %}<li>{{ t }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            <p><a href="{{ v.url }}" target="_blank" rel="noopener">▶ Watch Video</a><br>{{ v.title }} · {{ v.by }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <p><a href="#units">↑ All units</a></p>
+</section>
+{% endfor %}
+
+{% endblock %}

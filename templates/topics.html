@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% set active = 'topic_list' %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Topics{% endblock %}
+{% block content %}
+
+<section>
+    <h1>Python Topics &amp; Notes</h1>
+    <p class="note">Beginner to advanced, in the order of the <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">official Python Tutorial</a>. Click a topic to read its notes.</p>
+    <form action="{{ url_for('topic_list') }}" method="get">
+        <input type="search" name="q" value="{{ query }}" maxlength="50" placeholder="Search any topic...">
+        <button>Search</button>
+    </form>
+
+    {% if message %}<p class="note">{{ message }}</p>{% endif %}
+    {% if query and not message %}
+    <p class="note">Results for “{{ query }}”. <a href="{{ url_for('topic_list') }}">Show all topics</a></p>
+    {% endif %}
+
+    {% for level, items in groups.items() if items %}
+    <h2><span class="level {{ level|lower }}">{{ level }}</span></h2>
+    <div class="grid">
+        {% for slug, t in items.items() %}
+        <a href="{{ url_for('topic_notes', slug=slug) }}" class="card">
+            <h3>{{ t.title }}</h3>
+            <p>{{ t.summary }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock %}

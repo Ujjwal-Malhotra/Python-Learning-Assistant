@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% set active = 'resources' %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Resources{% endblock %}
+{% block content %}
+
+<section>
+    <h1>▶ Learning Resources</h1>
+    <p class="note">Free YouTube videos, grouped by level. Links open in a new tab. Each video is also linked from its topic page.</p>
+
+    {% for level in levels %}
+    <h2><span class="level {{ level|lower }}">{{ level }}</span></h2>
+    <div class="grid">
+        {% for v in videos if v.level == level %}
+        <a href="{{ v.url }}" class="card" target="_blank" rel="noopener">
+            <h3>▶ {{ v.title }}</h3>
+            <p>{{ v.by }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <h2>Free reading</h2>
+    <p><a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">📖 The official Python Tutorial</a></p>
+    <p><a href="https://automatetheboringstuff.com" target="_blank" rel="noopener">📖 Automate the Boring Stuff with Python (free online book)</a></p>
+</section>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<section class="hero">
+    <p class="tag">YOUR PERSONAL PYTHON GUIDE</p>
+    <h1>Learn Python <span>Step by Step</span></h1>
+    <p>From your first print() to OOP, DSA and automation. For BTech, BCA, MBA and complete beginners.</p>
+    <form action="{{ url_for('topic_list') }}" method="get">
+        <input type="search" name="q" maxlength="50" placeholder="Search any topic: loops, oop, decorators...">
+        <button>Search →</button>
+    </form>
+</section>
+
+<section>
+    <h2>Where do you want to go?</h2>
+    <div class="grid">
+        <a href="{{ url_for('topic_list') }}" class="card">
+            <h3>📚 Topics &amp; Notes</h3>
+            <p>Beginner to advanced syllabus with simple, searchable notes.</p>
+        </a>
+        <a href="{{ url_for('chatbot') }}" class="card">
+            <h3>🤖 AI Chatbot</h3>
+            <p>Ask Gemini to explain concepts, clear doubts and give hints.</p>
+        </a>
+        <a href="{{ url_for('playground') }}" class="card">
+            <h3>💻 Code Playground</h3>
+            <p>Write Python and run it right here.</p>
+        </a>
+        <a href="{{ url_for('resources') }}" class="card">
+            <h3>▶ Advanced Resources</h3>
+            <p>YouTube videos for OOP, DSA, decorators, APIs and automation.</p>
+        </a>
+        <a href="{{ url_for('examples') }}" class="card">
+            <h3>🧪 Examples &amp; Errors</h3>
+            <p>Small programs with output, and a solver for common errors.</p>
+        </a>
+    </div>
+</section>
+
+<section>
+    <h2>Which path is right for you?</h2>
+    <div class="grid">
+        {% for p in paths %}
+        <div class="box">
+            <h3>{{ p.who }}</h3>
+            <p>{{ p.plan }}</p>
+            <p>
+                {% for slug in p.topics %}
+                <a class="chip" href="{{ url_for('topic_notes', slug=slug) }}">{{ topics[slug].title }}</a>
+                {% endfor %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

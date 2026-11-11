@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% set active = 'examples' %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Examples & Errors{% endblock %}
+{% block content %}
+
+<section>
+    <h1>🧪 Python Examples</h1>
+    {% for ex in examples %}
+    <div class="example">
+        <p class="tag">{{ ex.title }}</p>
+        <pre><code>{{ ex.code }}</code></pre>
+        <p class="output">Output: {{ ex.output }}</p>
+    </div>
+    {% endfor %}
+</section>
+
+<section>
+    <h1>🐞 Common Python Errors</h1>
+    <form action="{{ url_for('examples') }}" method="get">
+        <input type="text" name="error" value="{{ error_text }}" maxlength="200" placeholder="Enter an error name or message...">
+        <button>Solve Error</button>
+    </form>
+
+    {% if error_msg %}<p class="note">{{ error_msg }}</p>{% endif %}
+
+    {% if error_name %}
+    <div class="box">
+        <h3>{{ error_name }}</h3>
+        <p><b>Meaning:</b> {{ errors[error_name].meaning }}</p>
+        <p><b>Common cause:</b> {{ errors[error_name].cause }}</p>
+        <p><b>Wrong code:</b></p>
+        <pre><code>{{ errors[error_name].wrong }}</code></pre>
+        <p><b>Corrected code:</b></p>
+        <pre><code>{{ errors[error_name].fixed }}</code></pre>
+    </div>
+    {% endif %}
+
+    <h2>All errors</h2>
+    <div class="grid">
+        {% for name, e in errors.items() %}
+        <div class="box">
+            <h3>{{ name }}</h3>
+            <p>{{ e.meaning }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

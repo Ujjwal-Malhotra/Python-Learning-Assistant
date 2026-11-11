@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% set active = 'playground' %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Playground{% endblock %}
+{% block content %}
+
+<section>
+    <h1>💻 Code Playground</h1>
+    <p class="note">Write code, press <b>Run</b> (or Ctrl+Enter). If it fails, press <b>Explain error</b> and the AI tutor will help. <code>input()</code> is not supported here.</p>
+    <div class="playground">
+        <div class="box">
+            <div class="bar">
+                <h3>📝 Code Editor</h3>
+                <div>
+                    <button id="run-btn">▶ Run</button>
+                    <button id="explain-btn" class="secondary" disabled>🐞 Explain error</button>
+                </div>
+            </div>
+            <textarea id="code" spellcheck="false" maxlength="10000" aria-label="Python code editor">{{ starter }}</textarea>
+        </div>
+        <div class="right">
+            <div class="box">
+                <h3>⌨ Terminal output</h3>
+                <pre id="output" class="terminal">Press Run to see output here.</pre>
+            </div>
+            <div class="box">
+                <h3>🤖 Error help</h3>
+                <p id="explain" class="explain">Run code that has an error, then press "Explain error".</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}"></script>{% endblock %}

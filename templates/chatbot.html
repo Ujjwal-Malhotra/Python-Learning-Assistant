@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% set active = 'chatbot' %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Chatbot{% endblock %}
+{% block content %}
+
+<section>
+    <h1>🤖 AI Python Tutor</h1>
+    <p class="note">Ask a doubt, ask for an explanation, or ask for a hint. Powered by Google Gemini.</p>
+    <div class="box">
+        <div id="chat" class="chat" aria-live="polite">
+            <div class="msg coach">Hi! I am your Python tutor. Try: "What is a loop?" or "Give me a hint to reverse a string".</div>
+        </div>
+        <form id="chat-form" class="chat-form">
+            <input id="chat-input" type="text" maxlength="1000" placeholder="Type your question..." autocomplete="off">
+            <button id="chat-send">Ask</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='app.js') }}"></script>{% endblock %}

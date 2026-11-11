@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% set active = 'topic_list' %}
+{% set back = ('Topics', url_for('topic_list')) %}
+{% block title %}{{ t.title }}{% endblock %}
+{% block content %}
+
+<section class="notes">
+    <p><span class="level {{ t.level|lower }}">{{ t.level }}</span></p>
+    <h1>{{ t.title }}</h1>
+    <p>{{ t.summary }}</p>
+
+    <h2>Notes</h2>
+    <ul>
+        {% for point in t.notes %}<li>{{ point }}</li>{% endfor %}
+    </ul>
+
+    <h2>Example</h2>
+    <pre><code>{{ t.code }}</code></pre>
+    <p class="note">Try it in the <a href="{{ url_for('playground') }}">Playground</a>, or ask the <a href="{{ url_for('chatbot') }}">Chatbot</a> if anything is unclear.</p>
+
+    <h2>Learn more</h2>
+    <p><a href="{{ t.ref }}" target="_blank" rel="noopener">📖 Official Python documentation</a></p>
+    {% for v in videos %}
+    <p><a href="{{ v.url }}" target="_blank" rel="noopener">▶ {{ v.title }}</a> · {{ v.by }}</p>
+    {% endfor %}
+</section>
+
+{% endblock %}

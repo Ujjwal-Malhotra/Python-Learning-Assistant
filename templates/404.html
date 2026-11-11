@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% set back = ('Home', url_for('home')) %}
+{% block title %}Page not found{% endblock %}
+{% block content %}
+<section>
+    <h1>Page not found</h1>
+    <p>That page does not exist. Try the <a href="{{ url_for('topic_list') }}">Topics</a> page.</p>
+</section>
+{% endblock %}

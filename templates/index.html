@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <h3>🐍 Python Learning Assistant</h3>
+    <div>
+        <a href="{{ url_for('home') }}#home">Home</a>
+        <a href="{{ url_for('home') }}#syllabus">Syllabus</a>
+        <a href="{{ url_for('home') }}#videos">Videos</a>
+        <a href="{{ url_for('home') }}#examples">Examples</a>
+        <a href="{{ url_for('home') }}#errors">Errors</a>
+        <a href="{{ url_for('playground') }}">Tutor &amp; Playground</a>
+    </div>
+</nav>
+
+<section class="hero" id="home">
+    <p class="tag">YOUR PERSONAL PYTHON GUIDE</p>
+    <h1>Learn Python <span>Step by Step</span></h1>
+    <p>From your first print() to OOP, DSA and automation. For BTech, BCA, MBA and complete beginners.</p>
+
+    <form action="{{ url_for('home') }}#syllabus" method="get">
+        <input type="search" name="q" maxlength="50" placeholder="Search any topic: loops, oop, decorators...">
+        <button>Search →</button>
+    </form>
+</section>
+
+<section>
+    <h2>What do you want to learn?</h2>
+    <div class="cards">
+        <a href="#syllabus" class="card">
+            <h3>📚 Syllabus &amp; Notes</h3>
+            <p>Beginner to advanced topics with simple notes.</p>
+        </a>
+        <a href="{{ url_for('playground') }}" class="card">
+            <h3>🤖 Ask the AI Tutor</h3>
+            <p>Gemini explains concepts, answers doubts and gives hints.</p>
+        </a>
+        <a href="{{ url_for('playground') }}" class="card">
+            <h3>💻 Code Playground</h3>
+            <p>Write Python and run it in your browser.</p>
+        </a>
+        <a href="#videos" class="card">
+            <h3>▶ YouTube Learning</h3>
+            <p>Good videos for OOP, DSA, APIs and automation.</p>
+        </a>
+        <a href="#examples" class="card">
+            <h3>🧪 Code Examples</h3>
+            <p>Understand programs with output.</p>
+        </a>
+        <a href="#errors" class="card">
+            <h3>🐞 Error Solver</h3>
+            <p>Understand common coding errors.</p>
+        </a>
+    </div>
+</section>
+
+<section id="paths">
+    <h2>Which path is right for you?</h2>
+    <div class="topics">
+        {% for p in paths %}
+        <div class="topic">
+            <h3>{{ p.who }}</h3>
+            <p>{{ p.plan }}</p>
+            <p>
+                {% for slug in p.topics %}
+                <a class="chip" href="{{ url_for('topic', slug=slug) }}">{{ all_topics[slug].title }}</a>
+                {% endfor %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="syllabus">
+    <h2>Python Syllabus</h2>
+    <p class="note">Follows the order of the <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">official Python Tutorial</a>. Click a topic to read its notes.</p>
+    {% if searched %}
+    <p>Search results for “{{ searched }}”. <a href="{{ url_for('home') }}#syllabus">Show full syllabus</a></p>
+    {% endif %}
+    {% if search_msg %}
+    <p>{{ search_msg }}</p>
+    {% endif %}
+
+    {% for level, items in groups.items() if items %}
+    <h3 class="level-title"><span class="level {{ level|lower }}">{{ level }}</span></h3>
+    <div class="topics">
+        {% for slug, t in items.items() %}
+        <a href="{{ url_for('topic', slug=slug) }}" class="card">
+            <h3>{{ t.title }}</h3>
+            <p>{{ t.summary }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</section>
+
+<section id="videos">
+    <h2>YouTube Learning</h2>
+    <p class="note">Free videos and playlists. Links open on YouTube in a new tab.</p>
+    {% for level in ['Beginner', 'Intermediate', 'Advanced'] %}
+    <h3 class="level-title"><span class="level {{ level|lower }}">{{ level }}</span></h3>
+    <div class="topics">
+        {% for v in videos if v.level == level %}
+        <a href="{{ v.url }}" class="card" target="_blank" rel="noopener">
+            <h3>▶ {{ v.title }}</h3>
+            <p>{{ v.by }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</section>
+
+<section id="examples">
+    <h2>Try a Python Example</h2>
+    {% for ex in examples %}
+    <div class="example">
+        <p class="tag">{{ ex.title }} · PYTHON</p>
+        <pre><code>{{ ex.code }}</code></pre>
+        <p class="output">Output: {{ ex.output }}</p>
+    </div>
+    <br>
+    {% endfor %}
+</section>
+
+<section id="errors">
+    <h2>Common Python Errors</h2>
+    <form action="{{ url_for('home') }}#errors" method="get">
+        <input type="text" name="error" maxlength="200" placeholder="Enter an error name or message...">
+        <button>Solve Error</button>
+    </form>
+    <br>
+
+    {% if error_msg %}
+    <p>{{ error_msg }}</p>
+    {% endif %}
+
+    {% if error_name %}
+    <div class="topic">
+        <h3>{{ error_name }}</h3>
+        <p><b>Meaning:</b> {{ errors[error_name].meaning }}</p>
+        <p><b>Common cause:</b> {{ errors[error_name].cause }}</p>
+        <p><b>Wrong code:</b></p>
+        <pre><code>{{ errors[error_name].wrong }}</code></pre>
+        <p><b>Corrected code:</b></p>
+        <pre><code>{{ errors[error_name].fixed }}</code></pre>
+    </div>
+    <br>
+    {% endif %}
+
+    <div class="topics">
+        {% for name, e in errors.items() %}
+        <div class="topic">
+            <h3>{{ name }}</h3>
+            <p>{{ e.meaning }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<footer>
+    <h3>Python Learning Assistant</h3>
+    <p>Learn. Practice. Improve.</p>
+</footer>
+
+</body>
+</html>

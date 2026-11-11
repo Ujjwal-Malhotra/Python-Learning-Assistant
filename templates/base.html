@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Python Learning Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <a class="brand" href="{{ url_for('home') }}">🐍 Python Learning Assistant</a>
+    <div>
+        {% for endpoint, label in [('home', 'Home'), ('topic_list', 'Topics'), ('syllabus', 'Academic Syllabus'), ('chatbot', 'Chatbot'),
+                                   ('playground', 'Playground'), ('resources', 'Resources'), ('examples', 'Examples')] %}
+        <a href="{{ url_for(endpoint) }}" {% if endpoint == active %}class="active"{% endif %}>{{ label }}</a>
+        {% endfor %}
+    </div>
+</nav>
+
+{% if back %}
+<p class="pagebar"><a href="{{ back[1] }}">← Back to {{ back[0] }}</a>
+    {% if back[0] != 'Home' %}<a href="{{ url_for('home') }}">🏠 Home</a>{% endif %}
+</p>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<footer>
+    <p>Python Learning Assistant · Learn. Practice. Improve.</p>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>
